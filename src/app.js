@@ -47,14 +47,11 @@ app.use((error, req, res, next) => {
     if (res.headersSent) {
         return next(error);
     }
-    console.log(error)
-    const status = error.statusCode || 500;
 
-    const message = error.message;
-    // const message = error.statusCode === 500 ? 'Internal server error' : error.message;
+    const status = error.statusCode || 500;
+    const message = error.statusCode === 500 ? 'Internal server error' : error.message;
     const data = error.data;
 
-    // throw error;
     res.status(status).json({ success: false, message: message, fails: data });
 });
 

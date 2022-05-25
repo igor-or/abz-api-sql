@@ -1,12 +1,9 @@
-const { Sequelize } = require('sequelize');
-
 const app = require('./app');
 const config = require('./config');
 const User = require('./models/user');
 const Position = require('./models/position');
 
 const { generateRandomUsers } = require('./seeders/users');
-
 
 const sequelize = require('./db');
 

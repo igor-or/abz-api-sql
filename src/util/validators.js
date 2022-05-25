@@ -3,9 +3,10 @@ exports.numberInRange = (field, options) => value => {
 
     let errors = [];
 
-    if (min && value < min)
+    if (min !== 'undefined' && value < min) {
         errors.push(`The ${field} must be at least ${min}.`);
-    if (max && value > max)
+    }
+    if (max !== 'undefined' && value > max)
         errors.push(`The ${field} may not be greater than ${max}.`);
 
     if (errors.length > 0) return Promise.reject(...errors);

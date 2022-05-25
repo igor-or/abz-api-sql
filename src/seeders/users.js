@@ -1,7 +1,5 @@
 const { faker } = require('@faker-js/faker');
 
-// const config = require('../config');
-
 const Position = require('../models/position');
 
 exports.generateRandomUsers = async usersCount => {
@@ -34,24 +32,3 @@ exports.generateRandomUsers = async usersCount => {
 
     return randomUsers;
 };
-
-// (async function () {
-//     try {
-//         await mongoose.connect(config.DATABASE_URL);
-
-//         await User.collection.drop(err => {
-//             if (err) {
-//                 console.log('Users collection not exists');
-//             }
-//         });
-//         await Counter.findOneAndRemove({ entity: 'User' }).exec();
-
-//         const randomUsers = await generateRandomUsers(45);
-//         await User.insertMany(randomUsers);
-
-//         console.log('Added users to database');
-//     } catch (err) {
-//         console.log(err);
-//     }
-//     process.exit();
-// })();
