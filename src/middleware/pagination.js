@@ -13,10 +13,28 @@ exports.paginate = entityService => {
         const entities = await entityService.getAll(skip, count);
         const totalEntities = await entityService.count();
 
+        if (totalEntities === 0) {
+            return {
+                success: true,
+                total_pages: 0,
+                ['total_' + entityService.entity_name]: 0,
+                count,
+                [!isNaN(offset) ? 'offset' : 'page']: !isNaN(offset)
+                    ? offset
+                    : page,
+                links: {
+                    next_url: null,
+                    prev_url: null,
+                },
+                [entityService.entity_name]: entities,
+            };
+        }
+
         const totalPages = Math.ceil(totalEntities / count);
 
         if (page > totalPages || offset >= totalEntities) {
             const error = new Error('Page not found');
+            error.statusCode = 404;
             return next(error);
         }
 

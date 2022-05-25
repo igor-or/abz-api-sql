@@ -1,13 +1,13 @@
 const positionService = require('../services/position');
 
-exports.getPositions = async (req, res, next) => {
+exports.getAllPositions = async (req, res, next) => {
     try {
-        const positions = await positionService.getPositions();
-        console.log(positions)
+        const positions = await positionService.getAll();
+        
         if (positions.length === 0) {
             const error = new Error('Positions not found');
-            error.statusCode = 422;
-            return next(error);
+            error.statusCode = 404;
+            throw error;
         }
 
         res.status(200).json({
@@ -15,8 +15,7 @@ exports.getPositions = async (req, res, next) => {
             positions,
         });
     } catch (error) {
-        error.statusCode = 500;
-        // error.message = 'Internal server error';
+        error.statusCode = error.statusCode || 500;
         next(error);
     }
 };

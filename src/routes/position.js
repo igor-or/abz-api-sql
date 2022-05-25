@@ -4,6 +4,6 @@ const positionController = require('../controllers/position');
 
 const router = express.Router();
 
-router.get('/', positionController.getPositions);
+router.get('/', positionController.getAllPositions);
 
 module.exports = router;

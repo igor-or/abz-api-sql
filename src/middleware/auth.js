@@ -1,5 +1,5 @@
-const Token = require('../models/token');
-const { getUserByEmail, getUserByPhone } = require('../services/user');
+const Token = require('../services/token');
+const { getByEmail:getUserByEmail, getByPhone: getUserByPhone } = require('../services/user');
 
 exports.isAuthorized = function (req, res, next) {
     const authHeader = req.get('Authorization');
@@ -22,7 +22,7 @@ exports.isAuthorized = function (req, res, next) {
     next();
 };
 
-exports.isNewUser = async (req, res, next) => {
+exports.notExistingUser = async (req, res, next) => {
     const { email, phone } = req.body;
 
     try {

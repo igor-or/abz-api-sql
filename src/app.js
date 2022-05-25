@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 // const bodyParser = require('body-parser');
 
-const Token = require('./models/token');
+const Token = require('./services/token');
 const userRouter = require('./routes/user');
 const positionRouter = require('./routes/position');
 
@@ -24,8 +24,6 @@ app.use((req, res, next) => {
     );
     next();
 });
-
-// app.use(bodyParser.json());
 
 app.use('/images', express.static(imagesPath));
 
@@ -49,7 +47,9 @@ app.use((error, req, res, next) => {
     }
 
     const status = error.statusCode || 500;
-    const message = error.statusCode === 500 ? 'Internal server error' : error.message;
+    const message = error.message;
+    // const message =
+    //     error.statusCode === 500 ? 'Internal server error' : error.message;
     const data = error.data;
 
     res.status(status).json({ success: false, message: message, fails: data });

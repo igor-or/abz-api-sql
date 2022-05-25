@@ -2,103 +2,42 @@ const tinify = require('tinify');
 
 const config = require('../config');
 
-const User = require('../models/user');
-const Position = require('../models/position');
+const userDao = require('../dao/user');
 
 const entity_name = 'users';
 
 const getAll = async (offset, limit) => {
-    try {
-        const users = await User.findAll({
-            include: {
-                model: Position,
-                // attributes: {
-                //     exclude: ['id'],
-                // },
-                nested: false,
-            },
-            offset: offset,
-            limit: limit,
-            order: [['id', 'ASC']],
-        });
-
-        return users.map(user => {
-            const fetchedUser = {
-                ...user.toJSON(),
-                position_id: user.position.id,
-                position: user.position.name,
-            };
-            delete fetchedUser.positionId;
-            return fetchedUser;
-        });
-    } catch (error) {
-        throw error;
-    }
+    return userDao.getAll(offset, limit);
 };
 
 const count = async () => {
-    return User.count();
+    return userDao.count();
 };
 
-const getUserById = async id => {
-    try {
-        const user = await User.findByPk(id, {
-            include: {
-                model: Position,
-                // attributes: {
-                //     exclude: ['id'],
-                // },
-                nested: false,
-            },
-            attributes: {
-                exclude: ['registration_timestamp'],
-            },
-        });
-        const fetchedUser = {
-            ...user.toJSON(),
-            position_id: user.position.id,
-            position: user.position.name,
-        };
-        delete fetchedUser.positionId;
-        return fetchedUser;
-    } catch (error) {
-        throw error;
-    }
+const getById = async id => {
+    return userDao.getById(id);
 };
 
-const getUserByEmail = async email => {
-    try {
-        return User.findOne({ where: { email: email } });
-    } catch (error) {
-        throw error;
-    }
+const getByEmail = async email => {
+    return userDao.getByEmail(email);
 };
 
-const getUserByPhone = async phone => {
-    try {
-        return User.findOne({ where: { phone: phone } });
-    } catch (error) {
-        throw error;
-    }
+const getByPhone = async phone => {
+    return userDao.getByPhone(phone);
 };
 
-const createNewUser = async newUserData => {
+const create = async newUserData => {
     tinify.key = config.TINIFY_API_KEY;
 
     const { buffer, path, url } = newUserData.photo;
 
-    try {
-        await cropPhotoAndSave(buffer, path);
+    await cropPhotoAndSave(buffer, path);
 
-        const user = await User.create({
-            ...newUserData,
-            positionId: newUserData.position_id,
-            photo: url,
-        });
-        return user;
-    } catch (err) {
-        console.log(err);
-    }
+    const user = await userDao.create({
+        ...newUserData,
+        photo: url,
+    });
+    return user;
 };
 
 const cropPhotoAndSave = async (buffer, path) => {
@@ -117,8 +56,8 @@ module.exports = {
     entity_name,
     count,
     getAll,
-    getUserById,
-    getUserByEmail,
-    getUserByPhone,
-    createNewUser,
+    getById,
+    getByEmail,
+    getByPhone,
+    create,
 };

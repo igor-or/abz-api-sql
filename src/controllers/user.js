@@ -14,8 +14,7 @@ const getAllUsers = async (req, res, next) => {
         );
         res.status(200).json(paginatedUsers);
     } catch (error) {
-        error.statusCode = 500;
-        // error.message = 'Internal server error';
+        error.statusCode = error.statusCode || 500;
         next(error);
     }
 };
@@ -24,24 +23,13 @@ const getUserById = async (req, res, next) => {
     const {
         params: { id },
     } = req;
-    
-    try {
-        const user = await userService.getUserById(id);
 
-        if (!user) {
-            errorData = { userId: 'User not found' };
-            const error = new Error(
-                'The user with the requested identifier does not exist.'
-            );
-            error.statusCode = 404;
-            error.data = errorData;
-            next(error);
-        }
+    try {
+        const user = await userService.getById(id);
 
         res.json({ success: true, user });
     } catch (error) {
-        error.statusCode = 500;
-        // error.message = 'Internal server error';
+        error.statusCode = error.statusCode || 500;
         next(error);
     }
 };
@@ -66,7 +54,7 @@ const createNewUser = async (req, res, next) => {
     };
 
     try {
-        const createdUser = await userService.createNewUser(newUserData);
+        const createdUser = await userService.create(newUserData);
 
         req.token.invalidate();
 
@@ -76,8 +64,7 @@ const createNewUser = async (req, res, next) => {
             message: 'New user successfully registered',
         });
     } catch (error) {
-        error.statusCode = 500;
-        // error.message = 'Internal server error';
+        error.statusCode = error.statusCode || 500;
         next(error);
     }
 };

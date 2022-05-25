@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { isAuthorized, isNewUser } = require('../middleware/auth');
+const { isAuthorized, notExistingUser } = require('../middleware/auth');
 const { imageUploader } = require('../middleware/upload');
 const {
     paginatedRequestSchema,
@@ -21,7 +21,7 @@ router.post(
     isAuthorized,
     imageUploader,
     validate(postUserSchema),
-    isNewUser,
+    notExistingUser,
     userController.createNewUser
 );
 
