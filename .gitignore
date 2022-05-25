@@ -1,0 +1,5 @@
+node_modules
+.env
+nodemon.json
+request.rest
+*.jpg
