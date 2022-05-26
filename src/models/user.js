@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 
 const sequelize = require('../db');
+const Position=require('./position')
 
 const User = sequelize.define(
     'user',
@@ -35,5 +36,6 @@ const User = sequelize.define(
     },
     { timestamps: false }
 );
-
+User.belongsTo(Position);
+        
 module.exports = User;

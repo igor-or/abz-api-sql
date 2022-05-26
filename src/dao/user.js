@@ -66,8 +66,6 @@ exports.getByEmail = async email => User.findOne({ where: { email: email } });
 exports.getByPhone = async phone => User.findOne({ where: { phone: phone } });
 
 exports.create = async userData => {
-    console.log(userData);
-
     return await User.create({
         ...userData,
         positionId: userData.position_id,

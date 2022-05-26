@@ -1,33 +1,32 @@
 const app = require('./app');
-const config = require('./config');
-const User = require('./models/user');
-const Position = require('./models/position');
-
-const { generateRandomUsers } = require('./seeders/users');
+const userSeeder = require('./seeders/users');
 
 const sequelize = require('./db');
 
-User.belongsTo(Position);
-Position.hasMany(User);
+class Server {
+    constructor() {
+        this.app = app;
+    }
 
-sequelize
-    .sync() //{ force: true }
-    .then(result => {
-        return User.count();
-    })
-    .then(count => {
-        if (!count) {
-            return generateRandomUsers(45);
-        }
-    })
-    .then(users => {
-        if (users) {
-            return User.bulkCreate(users);
-        }
-    })
-    .then(result => {
-        app.listen(config.PORT, () => {
-            console.log(`API is listening on port ${config.PORT}`);
+    static async build() {
+        await this.#setup();
+        return new Server();
+    }
+
+    static async #setup() {
+        await sequelize.sync();
+        await userSeeder.ensurePopulated();
+    }
+
+    run(port) {
+        this.server = this.app.listen(port, () => {
+            console.log(`API is listening on port ${port}`);
         });
-    })
-    .catch(err => console.log(err));
+    }
+
+    stop(done) {
+        this.server.close(done);
+    }
+}
+
+module.exports = Server;

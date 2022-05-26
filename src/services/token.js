@@ -74,7 +74,7 @@ module.exports = class Token {
                 }
             );
         } catch (error) {
-            console.log(console.error());
+            console.log(error);
         }
     }
 };
