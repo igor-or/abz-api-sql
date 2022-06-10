@@ -1,8 +1,7 @@
 const { body, param, query } = require('express-validator');
 const { numberInRange } = require('../../util/validators');
 
-
-exports.paginatedRequestSchema = [
+const paginatedRequest = [
     query('count')
         .optional()
         .isInt() //.isInt({ min: 1, max: 100 })
@@ -20,9 +19,11 @@ exports.paginatedRequestSchema = [
         .custom(numberInRange('offset', { min: 0 })),
 ];
 
-exports.getUserSchema = param('id', 'The user_id must be an integer.').isInt();
+const getUsers = paginatedRequest;
 
-exports.postUserSchema = [
+const getUser = param('id', 'The user_id must be an integer.').isInt();
+
+const postUser = [
     body(
         'name',
         'The name must be at least 2 characters and not greater than 60.'
@@ -45,3 +46,5 @@ exports.postUserSchema = [
         .withMessage('The position id must be an integer.')
         .custom(numberInRange('position_id', { min: 1 })),
 ];
+
+module.exports = { getUsers, getUser, postUser };
