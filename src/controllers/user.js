@@ -2,17 +2,12 @@ const path = require('path');
 
 const userService = require('../services/user');
 
-const { paginate } = require('../middleware/pagination');
+const { paginate } = require('../util/pagination');
 
 class UserController {
     async getAllUsers(req, res, next) {
         try {
-            const paginatedUsers = await paginate(userService).call(
-                null,
-                req,
-                res,
-                next
-            );
+            const paginatedUsers = await paginate(req, userService);
             res.status(200).json(paginatedUsers);
         } catch (error) {
             error.statusCode = error.statusCode || 500;

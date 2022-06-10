@@ -6,7 +6,7 @@ const userDao = require('../dao/user');
 
 class UserService {
     constructor() {
-        this.entity_name = 'users';
+        this.entityName = 'users';
     }
 
     async getAll(offset, limit) {
