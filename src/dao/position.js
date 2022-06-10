@@ -1,7 +1,11 @@
 const Position = require('../models/position');
 
-exports.getAll = async () => {
-    return Position.findAll({
-        attributes: ['id', 'name'],
-    });
-};
+class PositionDao {
+    async getAll() {
+        return Position.findAll({
+            attributes: ['id', 'name'],
+        });
+    }
+}
+
+module.exports = new PositionDao();

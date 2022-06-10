@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 
 const sequelize = require('../db');
-const User = require('./user');
 
 const Position = sequelize.define(
     'position',
@@ -19,6 +18,5 @@ const Position = sequelize.define(
     },
     { timestamps: false }
 );
-// Position.hasMany(User);
 
 module.exports = Position;
