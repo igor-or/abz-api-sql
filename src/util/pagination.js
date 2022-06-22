@@ -57,10 +57,8 @@ exports.paginate = async (paginatedReq, entityService) => {
     }
 
     const baseUrl =
-        paginatedReq.protocol +
-        '://' +
-        paginatedReq.get('host') +
-        paginatedReq.baseUrl;
+        // paginatedReq.protocol
+        'https://' + paginatedReq.get('host') + paginatedReq.baseUrl;
 
     const prevPageUrl = prevPageQuery
         ? baseUrl + '?' + queryString.stringify(prevPageQuery)

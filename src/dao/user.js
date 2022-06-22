@@ -14,7 +14,7 @@ class UserDao {
             },
             offset: offset,
             limit: limit,
-            order: [['id', 'ASC']],
+            order: [['id', 'DESC']],
         });
 
         if (!fetchedUsers) {

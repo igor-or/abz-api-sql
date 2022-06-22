@@ -2,32 +2,31 @@ const multer = require('multer');
 
 const storage = multer.memoryStorage();
 
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg') {
-        cb(null, true);
-    } else {
+const imageFilter = (req, file, cb) => {
+    if (!(file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg')) {
         req.file_errors = [];
         req.file_errors.push(
             'Attached file is not supported image type (jpg/jpeg)'
         );
-        cb(null, false);
+        return cb(null, false);
     }
+    cb(null, true);
 };
 
 const upload = multer({
     storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 5000000 },
+    fileFilter: imageFilter,
+    limits: { fileSize: 5242880 },
 });
 
-const uploadSingle = upload.single('image');
+const uploadSingle = upload.single('photo');
 
 exports.imageUploader = (req, res, next) => {
     uploadSingle(req, res, multerErrorHandler.call(null, req, res, next));
 };
 
 const multerErrorHandler = (req, res, next) => error => {
-    req.file_errors = [];
+    if (!req.file_errors) req.file_errors = [];
 
     if (error instanceof multer.MulterError) {
         if (error.message === 'File too large') {
@@ -36,12 +35,21 @@ const multerErrorHandler = (req, res, next) => error => {
             req.file_errors.push(error.message);
         }
     } else if (error) {
-        // error.message = 'Internal server error';
+        error.message = 'Internal server error';
         error.statusCode = 500;
         next(error);
     }
 
-    if (!req.file) {
+    if (req.file) {
+        let dimensions = sizeOf(req.file.buffer);
+        if (dimensions.width < 70 || dimensions.height < 70) {
+            req.file_errors.push(
+                'The photo must be at least 70px width and height.'
+            );
+        }
+    }
+
+    if (!req.file && !req.file_errors.length) {
         req.file_errors.push('Image not provided.');
     }
 

@@ -38,8 +38,7 @@ class UserController {
         const newImageName = new Date().getTime() + '-' + originalname;
         const newImagePath = storagePath + '/' + newImageName;
 
-        const photoUrl =
-            req.protocol + '://' + req.get('host') + '/images/' + newImageName;
+        const photoUrl ='https://' + req.get('host') + '/images/' + newImageName;
 
         const newUserData = {
             name,

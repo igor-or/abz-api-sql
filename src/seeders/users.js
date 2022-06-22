@@ -15,6 +15,7 @@ class UserSeeder {
         if (!usersCount) {
             await this.#generateRandomUsers(45);
             await User.bulkCreate(this.#users);
+            console.log('Users seeded to database');
         }
     }
 
@@ -30,7 +31,7 @@ class UserSeeder {
                 _id: i,
                 name: firstName,
                 email: faker.internet.email(firstName).toLowerCase(),
-                phone: faker.phone.phoneNumber('+380#########'),
+                phone: faker.phone.number('+380#########'),
                 positionId: Math.floor(Math.random() * numberOfPositions + 1), //position.id, // position.id,
                 registration_timestamp: faker.date
                     .between(

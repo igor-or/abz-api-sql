@@ -1,15 +1,20 @@
 const Token = require('../services/token');
-const { getByEmail:getUserByEmail, getByPhone: getUserByPhone } = require('../services/user');
+const {
+    getByEmail: getUserByEmail,
+    getByPhone: getUserByPhone,
+} = require('../services/user');
 
 exports.isAuthorized = function (req, res, next) {
-    const authHeader = req.get('Authorization');
+    // const authHeader = req.get('Authorization');
+    const authHeader = req.get('Token');
     if (!authHeader) {
         const error = new Error('Not authenticated.');
         error.statusCode = 401;
         next(error);
     }
 
-    const encodedToken = authHeader.split(' ')[1];
+    // const encodedToken = authHeader.split(' ')[1];
+    const encodedToken = authHeader;
     const token = new Token(encodedToken);
 
     if (!token.isValid) {

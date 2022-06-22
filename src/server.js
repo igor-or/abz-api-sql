@@ -1,5 +1,5 @@
 const app = require('./app');
-const userSeeder = require('./seeders/users');
+const seeder = require('./seeders/seeder');
 
 const sequelize = require('./db');
 
@@ -15,7 +15,7 @@ class Server {
 
     static async #setup() {
         await sequelize.sync();
-        await userSeeder.ensurePopulated();
+        await seeder.ensurePopulated();
     }
 
     run(port) {
