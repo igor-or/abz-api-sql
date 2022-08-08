@@ -10,23 +10,23 @@ class UserService {
     }
 
     async getAll(offset, limit) {
-        return userDao.getAll(offset, limit);
+        return await userDao.getAll(offset, limit);
     }
 
     async count() {
-        return userDao.count();
+        return await userDao.count();
     }
 
     async getById(id) {
-        return userDao.getById(id);
+        return await userDao.getById(id);
     }
 
     async getByEmail(email) {
-        return userDao.getByEmail(email);
+        return await userDao.getByEmail(email);
     }
 
     async getByPhone(phone) {
-        return userDao.getByPhone(phone);
+        return await userDao.getByPhone(phone);
     }
 
     async create(newUserData) {

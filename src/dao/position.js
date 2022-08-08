@@ -2,7 +2,7 @@ const Position = require('../models/position');
 
 class PositionDao {
     async getAll() {
-        return Position.findAll({
+        return await Position.findAll({
             attributes: ['id', 'name'],
         });
     }

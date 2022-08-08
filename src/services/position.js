@@ -2,7 +2,7 @@ const positionDao = require('../dao/position');
 
 class PositionService {
     async getAll() {
-        return positionDao.getAll();
+        return await positionDao.getAll();
     }
 }
 

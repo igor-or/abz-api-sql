@@ -3,7 +3,7 @@ const Position = require('../models/position');
 
 class UserDao {
     async count() {
-        return User.count();
+        return await User.count();
     }
 
     async getAll(offset, limit) {
@@ -63,11 +63,11 @@ class UserDao {
     }
 
     async getByEmail(email) {
-        return User.findOne({ where: { email: email } });
+        return await User.findOne({ where: { email: email } });
     }
 
     async getByPhone(phone) {
-        return User.findOne({ where: { phone: phone } });
+        return await User.findOne({ where: { phone: phone } });
     }
 
     async create(userData) {
